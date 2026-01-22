@@ -1,0 +1,28 @@
+import { DataSource } from 'typeorm';
+import { User } from './src/users/entities/user.entity';
+import { RefreshTokens } from './src/users/entities/refresh_tokens.entity';
+import { Expense } from './src/expense/entities/expense.entity';
+import { Category } from './src/category/entities/category.entity';
+import { config } from 'dotenv';
+
+config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+console.log(process.env);
+
+export const AppDataSource = new DataSource({
+  type: 'mysql' as const,
+  host: process.env.MYSQL_HOST || 'localhost',
+  port: parseInt(process.env.MYSQL_PORT || '3306'),
+  username: process.env.MYSQL_USER || 'root',
+  password: process.env.MYSQL_PASSWORD || 'root',
+  database: process.env.MYSQL_DATABASE || 'test',
+  entities: [User, RefreshTokens, Expense, Category],
+  migrations: ['src/migrations/*.ts'],
+  logging: false,
+  extra: {
+    connectionLimit: 10,
+  },
+  connectTimeout: 60000,
+});

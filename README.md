@@ -1,172 +1,98 @@
-# Expense Tracker Monorepo
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-A full-stack expense tracking application built with Next.js and NestJS, managed with Turborepo.
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-## Project Structure
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-```
-.
-├── apps/
-│   ├── web/          # Next.js frontend application
-│   └── api/          # NestJS backend API
-├── packages/
-│   └── shared-types/ # Shared TypeScript types and DTOs
-├── turbo.json        # Turborepo configuration
-└── package.json      # Root package.json
-```
+## Description
 
-## Prerequisites
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-**Option 1: Local Development**
-- Node.js >= 20.0.0
-- pnpm >= 9.0.0
-- MySQL or PostgreSQL
-
-**Option 2: Docker (Recommended)**
-- Docker Engine 20.10+
-- Docker Compose v2.0+
-
-## Getting Started
-
-### 🐳 Docker Setup (Recommended)
-
-See [DOCKER_SETUP.md](./DOCKER_SETUP.md) for detailed instructions.
-
-**Quick Start:**
+## Project setup
 
 ```bash
-# 1. Create environment file
-cp .env.docker .env
-
-# 2. Start all services
-docker-compose up -d
-
-# 3. Run migrations
-docker-compose exec api pnpm migration:run
-
-# 4. Access the apps
-# Web: http://localhost:3000
-# API: http://localhost:3001
+$ npm install
 ```
 
-### 💻 Local Development Setup
-
-### 1. Install pnpm (if not already installed)
+## Compile and run the project
 
 ```bash
-npm install -g pnpm@9
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
-### 2. Install dependencies
+## Run tests
 
 ```bash
-pnpm install
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
 ```
 
-### 3. Setup environment variables
+## Deployment
 
-Create `.env` files in both `apps/web` and `apps/api` directories. Use the `.env.example` files as templates.
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
-### 4. Run database migrations (API)
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
 ```bash
-cd apps/api
-pnpm migration:run
+$ npm install -g @nestjs/mau
+$ mau deploy
 ```
 
-### 5. Development
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-Run both apps in development mode:
+## Resources
 
-```bash
-# From root directory
-pnpm dev
-```
+Check out a few resources that may come in handy when working with NestJS:
 
-Or run individually:
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-```bash
-# Frontend only
-cd apps/web
-pnpm dev
+## Support
 
-# API only
-cd apps/api
-pnpm dev
-```
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Available Scripts
+## Stay in touch
 
-### Root Level
-
-- `pnpm dev` - Start all apps in development mode
-- `pnpm build` - Build all apps
-- `pnpm lint` - Lint all apps
-- `pnpm test` - Run tests for all apps
-- `pnpm clean` - Clean all build artifacts and node_modules
-
-### Web App (apps/web)
-
-- `pnpm dev` - Start Next.js development server
-- `pnpm build` - Build for production
-- `pnpm start` - Start production server
-- `pnpm lint` - Run ESLint
-
-### API (apps/api)
-
-- `pnpm dev` - Start NestJS in watch mode
-- `pnpm build` - Build for production
-- `pnpm start:prod` - Start production server
-- `pnpm test` - Run tests
-- `pnpm migration:generate` - Generate new migration
-- `pnpm migration:run` - Run migrations
-- `pnpm seed:dev` - Seed database with development data
-
-## Shared Types
-
-The `@expense-tracker/shared-types` package contains TypeScript interfaces and DTOs shared between the frontend and backend. This ensures type safety across the entire application.
-
-Import shared types like this:
-
-```typescript
-import { User, Expense, CreateExpenseDto } from '@expense-tracker/shared-types';
-```
-
-## Tech Stack
-
-- **Frontend**: Next.js 16, React 18, TailwindCSS, Radix UI
-- **Backend**: NestJS, TypeORM, PostgreSQL/MySQL
-- **Monorepo**: Turborepo, pnpm workspaces
-- **Authentication**: JWT
-
-## Development Workflow
-
-1. Make changes in the appropriate app or shared package
-2. Turborepo will automatically detect changes and rebuild dependencies
-3. Changes to `shared-types` will trigger rebuilds in apps that depend on it
-
-## Database Migrations
-
-Database logic and migrations are handled exclusively in the API (`apps/api`). The frontend communicates with the database through API endpoints only.
-
-To create a new migration:
-
-```bash
-cd apps/api
-pnpm migration:generate src/migrations/MigrationName
-```
-
-## Building for Production
-
-```bash
-# Build all apps
-pnpm build
-
-# Build specific app
-pnpm --filter @expense-tracker/web build
-pnpm --filter @expense-tracker/api build
-```
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
-MIT
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

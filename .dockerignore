@@ -1,61 +1,13 @@
-# Dependencies
-**/node_modules
-**/.pnp
-**/.pnp.js
-
-# Testing
-**/coverage
-
-# Build outputs
-apps/web/.next
-apps/web/out
-apps/api/dist
-
-# Misc
-.DS_Store
-*.pem
-
-# Debug logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# Local env files
+node_modules
+dist
+npm-debug.log
 .env
-.env*.local
-.env.development
-.env.test
-
-# Turbo
-.turbo
-
-# IDE
-.vscode
-.idea
-*.swp
-*.swo
-*~
-
-# Git
 .git
 .gitignore
-.gitattributes
-
-# Documentation
+README.md
+.vscode
+.idea
+coverage
+.DS_Store
 *.md
-!README.md
 
-# Docker
-Dockerfile*
-docker-compose*
-.dockerignore
-
-# CI/CD
-.github
-.gitlab-ci.yml
-
-# Misc
-.editorconfig
-.prettierrc
-.eslintrc

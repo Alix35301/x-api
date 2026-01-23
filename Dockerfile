@@ -50,15 +50,16 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
 COPY packages ./packages
 COPY apps/api/package.json ./apps/api/
 
-# Install only production dependencies
-RUN pnpm install --frozen-lockfile --prod
+# Install all dependencies (needed for TypeScript migrations)
+RUN pnpm install --frozen-lockfile --prod=false
 
 # Copy built application from builder
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 
-# Copy necessary runtime files
+# Copy necessary runtime files (needed for migrations and data-source-cli.ts)
 COPY apps/api/data-source-cli.ts ./apps/api/
-COPY apps/api/src/migrations ./apps/api/src/migrations
+COPY apps/api/tsconfig.json ./apps/api/
+COPY apps/api/src ./apps/api/src
 
 WORKDIR /app/apps/api
 

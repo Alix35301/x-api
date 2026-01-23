@@ -28,6 +28,8 @@ COPY --from=deps /app/packages ./packages
 # Copy source files
 COPY apps/api ./apps/api
 COPY package.json pnpm-workspace.yaml ./
+# Copy root .env for build-time configuration
+COPY .env ./apps/api/.env
 
 WORKDIR /app/apps/api
 
@@ -62,4 +64,4 @@ WORKDIR /app/apps/api
 
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]

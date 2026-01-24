@@ -10,10 +10,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { DeviceServiceService } from './device-service/device-service.service';
 import { DatabaseService } from './database/database.service';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { BankImportModule } from './bank-import/bank-import.module';
 import { User } from './users/entities/user.entity';
 import { RefreshTokens } from './users/entities/refresh_tokens.entity';
 import { Expense } from './expense/entities/expense.entity';
 import { Category } from './category/entities/category.entity';
+import { BankAccount } from './bank-import/entities/bank-account.entity';
+import { ImportHistory } from './bank-import/entities/import-history.entity';
+import { CategoryRule } from './bank-import/entities/category-rule.entity';
 
 // Conditionally import SeedModule only in non-production environments
 const imports = [
@@ -32,7 +36,7 @@ const imports = [
         username: config.get<string>('MYSQL_USER', 'user'),
         password: config.get<string>('MYSQL_PASSWORD', 'password'),
         database,
-        entities: [User, RefreshTokens, Expense, Category],
+        entities: [User, RefreshTokens, Expense, Category, BankAccount, ImportHistory, CategoryRule],
         extra: { connectionLimit: 10 },
         connectTimeout: 60000,
       };
@@ -47,6 +51,7 @@ const imports = [
     signOptions: { expiresIn: parseInt(process.env.JWT_EXPIRES_IN || '15') * 60 * 1000 },
   }),
   DashboardModule,
+  BankImportModule,
 ];
 
 // Only load SeedModule in development/test environments

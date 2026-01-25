@@ -4,12 +4,8 @@ RUN npm install -g pnpm@9
 
 WORKDIR /app
 
-# Copy monorepo root files
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
-
-# Copy packages and API package.json
-COPY packages ./packages
-COPY apps/api/package.json ./apps/api/
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
 
 # Install dependencies (including devDependencies for build)
 RUN pnpm install --frozen-lockfile --prod=false
@@ -22,16 +18,9 @@ WORKDIR /app
 
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
-COPY --from=deps /app/packages ./packages
 
 # Copy source files
-COPY apps/api ./apps/api
-COPY package.json pnpm-workspace.yaml ./
-# Copy root .env for build-time configuration
-COPY .env ./apps/api/.env
-
-WORKDIR /app/apps/api
+COPY . .
 
 # Build NestJS application
 ENV NODE_ENV=production
@@ -46,22 +35,17 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Copy package files for production install
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
-COPY packages ./packages
-COPY apps/api/package.json ./apps/api/
+COPY package.json pnpm-lock.yaml* ./
 
-# Install all dependencies (needed for TypeScript migrations)
+# Install all dependencies (needed for TypeScript migrations and TypeORM CLI)
 RUN pnpm install --frozen-lockfile --prod=false
 
 # Copy built application from builder
-COPY --from=builder /app/apps/api/dist ./apps/api/dist
+COPY --from=builder /app/dist ./dist
 
 # Copy necessary runtime files (needed for migrations and data-source-cli.ts)
-COPY apps/api/data-source-cli.ts ./apps/api/
-COPY apps/api/tsconfig.json ./apps/api/
-COPY apps/api/src ./apps/api/src
-
-WORKDIR /app/apps/api
+COPY data-source-cli.ts tsconfig.json ./
+COPY src ./src
 
 EXPOSE 3000
 

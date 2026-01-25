@@ -9,7 +9,7 @@ import { CategoryRule } from './src/bank-import/entities/category-rule.entity';
 import { config } from 'dotenv';
 
 config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : `.env`,
 });
 
 console.log(process.env);

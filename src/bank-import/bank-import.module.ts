@@ -13,6 +13,7 @@ import { TransactionValidatorService } from './services/transaction-validator.se
 import { DuplicateDetectorService } from './services/duplicate-detector.service';
 import { CategorizationService } from './services/categorization.service';
 import { ImportOrchestratorService } from './services/import-orchestrator.service';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ImportOrchestratorService } from './services/import-orchestrator.servic
         fileSize: 10 * 1024 * 1024, // 10MB max file size
       },
     }),
+    AuthModule,
   ],
   controllers: [BankImportController],
   providers: [

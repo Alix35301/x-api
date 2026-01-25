@@ -1,5 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, DeleteDateColumn, Index, ManyToOne, JoinColumn } from 'typeorm';
-import { ImportHistory } from '../../bank-import/entities/import-history.entity';
+import { Column, Entity, PrimaryGeneratedColumn, DeleteDateColumn, Index } from 'typeorm';
 
 export enum ExpenseSource {
   IMPORT = 'IMPORT',
@@ -42,10 +41,6 @@ export class Expense {
 
   @Column({ type: 'int', nullable: true })
   import_id: number;
-
-  @ManyToOne(() => ImportHistory, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'import_id' })
-  import: ImportHistory;
 
   @Column({ type: 'varchar', length: 64, nullable: true })
   transaction_hash: string;

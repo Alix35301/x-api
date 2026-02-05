@@ -36,16 +36,13 @@ RUN pnpm install --frozen-lockfile --prod=false
 # Copy built application
 COPY --from=builder /app/dist ./dist
 
-# Copy files needed for TypeORM migrations
+# Copy source files needed for TypeORM migrations (data-source-cli.ts uses ts-node)
 COPY data-source-cli.ts tsconfig.json ./
-COPY src/migrations ./src/migrations
-COPY src/users/entities ./src/users/entities
-COPY src/expense/entities ./src/expense/entities
-COPY src/category/entities ./src/category/entities
-COPY src/bank-import/entities ./src/bank-import/entities
+COPY src ./src
 
 # Bake production env vars into the image
 COPY .env.production .env
+COPY .env.production .env.production
 
 EXPOSE 3000
 

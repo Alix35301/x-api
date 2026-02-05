@@ -43,6 +43,10 @@ export class UsersService {
     await this.userRepo.save(updateUserDto);
   }
 
+  async updatePassword(id: number, hashedPassword: string) {
+    await this.userRepo.update(id, { password: hashedPassword });
+  }
+
   remove(id: number) {
     return `This action removes a #${id} user`;
   }

@@ -4,8 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
 import { Expense } from '../expense/entities/expense.entity';
 import { Category } from '../category/entities/category.entity';
-import { DatabaseService } from '../../src/database/database.service';
-import { getDbConfig } from '../../src/configs/database';
+import { RefreshTokens } from '../users/entities/refresh_tokens.entity';
+import { BankAccount } from '../bank-import/entities/bank-account.entity';
+import { ImportHistory } from '../bank-import/entities/import-history.entity';
+import { CategoryRule } from '../bank-import/entities/category-rule.entity';
+import { DatabaseService } from '../database/database.service';
+import { getDbConfig } from '../configs/database';
 
 @Module({
   providers: [SeedService, DatabaseService],
@@ -13,7 +17,7 @@ import { getDbConfig } from '../../src/configs/database';
     TypeOrmModule.forRootAsync({
       useFactory: () => getDbConfig(),
     }),
-    TypeOrmModule.forFeature([User, Category, Expense]),
+    TypeOrmModule.forFeature([User, Category, Expense, RefreshTokens, BankAccount, ImportHistory, CategoryRule]),
   ],
 })
 export class SeedModule { }

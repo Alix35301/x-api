@@ -1,6 +1,7 @@
 import { Body, Controller, Post, Get, Req, HttpCode, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserDto } from './dto/user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthGuard } from './auth.guard';
 import type { Request, Response } from 'express';
 
@@ -18,6 +19,13 @@ export class AuthController {
   @HttpCode(200)
   refresh(@Body('token') token: string) {
     return this.authService.refresh(token);
+  }
+
+  @Post('change-password')
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  changePassword(@Req() request: Request, @Body() changePasswordDto: ChangePasswordDto) {
+    return this.authService.changePassword(request['user'].id, changePasswordDto);
   }
 
   @Get('me')

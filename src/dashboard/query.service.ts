@@ -114,4 +114,14 @@ export class DashboardQueryService {
 
     return result;
   }
+
+  async getLastExpenseDate(user_id: string): Promise<Date | null> {
+    const result = await this.repo
+      .createQueryBuilder("expense")
+      .select("MAX(expense.date)", "lastDate")
+      .where("expense.user_id = :user_id", { user_id })
+      .getRawOne();
+
+    return result?.lastDate || null;
+  }
 }

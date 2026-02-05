@@ -9,8 +9,8 @@ import {
 import { CsvConfigDto } from '../dto/csv-config.dto';
 
 export enum AccountType {
-  CHECKING = 'CHECKING',
-  SAVINGS = 'SAVINGS',
+  SAVING = 'SAVING',
+  CURRENT = 'CURRENT',
   CREDIT_CARD = 'CREDIT_CARD',
   OTHER = 'OTHER',
 }

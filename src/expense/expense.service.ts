@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { EntityNotFoundError, In, Repository } from 'typeorm';
 import { Expense } from './entities/expense.entity';
 import { FilterDTO } from './dto/filter.dto';
 import { PaginatedResult, PaginationDTO } from 'src/common/dto/pagination.dto';
@@ -118,5 +118,25 @@ export class ExpenseService {
       date: expense.date ? new Date(expense.date) : new Date(),
     }));
     return await this.expenseRepo.save(expensesWithUserId);
+  }
+
+  async bulkDelete(userId: string, ids: number[]) {
+    if (!ids || ids.length === 0) {
+      return { deleted: 0 };
+    }
+
+    const expenses = await this.expenseRepo.find({
+      where: {
+        id: In(ids),
+        user_id: userId,
+      },
+    });
+
+    if (expenses.length === 0) {
+      return { deleted: 0 };
+    }
+
+    await this.expenseRepo.softRemove(expenses);
+    return { deleted: expenses.length };
   }
 }

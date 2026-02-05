@@ -16,7 +16,8 @@ export class DashboardService {
       monthly: await this.getThisMonthsMetrics(user_id),
       dailyAggregates: await this.getDailySum(user_id),
       weeklyAggregates: await this.getWeeklySum(user_id),
-      monthlyAggregates: await this.getMonthlySum(user_id)
+      monthlyAggregates: await this.getMonthlySum(user_id),
+      lastExpenseDate: await this.dashboardQueryService.getLastExpenseDate(user_id)
     };
   }
 

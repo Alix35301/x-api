@@ -56,13 +56,18 @@ export class CsvParserService {
   }
 
   private parseRow(row: string[], config: CsvConfigDto, rowIndex: number): ParsedTransaction | null {
-    const { columnMappings, dateFormat, amountFormat } = config;
+    const { columnMappings, dateFormat, amountFormat, filters } = config;
 
-    // Extract values from columns
-    const dateStr = row[columnMappings.date]?.trim();
-    const description = row[columnMappings.description]?.trim();
-    const amountStr = row[columnMappings.amount]?.trim();
-    const typeStr = columnMappings.type !== undefined ? row[columnMappings.type]?.trim() : undefined;
+    // Extract and clean values from columns
+    const dateStr = this.cleanValue(row[columnMappings.date]);
+    const description = this.cleanValue(row[columnMappings.description]);
+    const amountStr = this.cleanValue(row[columnMappings.amount]);
+    const typeStr = columnMappings.type !== undefined ? this.cleanValue(row[columnMappings.type]) : undefined;
+
+    // Apply filters
+    if (filters && !this.passesFilters(row, columnMappings, filters)) {
+      return null;
+    }
 
     // Validate required fields
     if (!dateStr || !description || !amountStr) {
@@ -152,5 +157,52 @@ export class CsvParserService {
 
     const amount = parseFloat(cleanAmount);
     return isNegative ? -Math.abs(amount) : Math.abs(amount);
+  }
+
+  private cleanValue(value: string | undefined): string {
+    if (!value) return '';
+
+    let cleaned = value.trim();
+
+    // Handle Excel formula-style text: ="value"
+    if (cleaned.startsWith('="') && cleaned.endsWith('"')) {
+      cleaned = cleaned.slice(2, -1);
+    }
+
+    return cleaned;
+  }
+
+  private passesFilters(
+    row: string[],
+    columnMappings: { date: number; description: number; amount: number; type?: number },
+    filters: Record<string, { include?: string[]; exclude?: string[] }>,
+  ): boolean {
+    const columnNameToIndex: Record<string, number | undefined> = {
+      date: columnMappings.date,
+      description: columnMappings.description,
+      amount: columnMappings.amount,
+      type: columnMappings.type,
+    };
+
+    for (const [columnName, filter] of Object.entries(filters)) {
+      const columnIndex = columnNameToIndex[columnName];
+      if (columnIndex === undefined) continue;
+
+      const value = this.cleanValue(row[columnIndex]).toUpperCase();
+
+      // Check include filter (if specified, value must match one)
+      if (filter.include && filter.include.length > 0) {
+        const matches = filter.include.some(v => value.includes(v.toUpperCase()));
+        if (!matches) return false;
+      }
+
+      // Check exclude filter (if specified, value must not match any)
+      if (filter.exclude && filter.exclude.length > 0) {
+        const matches = filter.exclude.some(v => value.includes(v.toUpperCase()));
+        if (matches) return false;
+      }
+    }
+
+    return true;
   }
 }

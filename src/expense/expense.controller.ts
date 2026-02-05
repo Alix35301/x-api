@@ -44,14 +44,19 @@ export class ExpenseController {
     return await this.expenseService.update(req.user.id.toString(), +id, updateExpenseDto);
   }
 
+  @Post('bulk')
+  async bulkInsert(@Req() req: Request & { user: Partial<User> }, @Body() createExpenseDto: CreateExpenseDto[]) {
+    return await this.expenseService.bulkInsert(req.user.id.toString(), createExpenseDto);
+  }
+
+  @Delete('bulk')
+  async bulkDelete(@Req() req: Request & { user: Partial<User> }, @Body() body: { ids: number[] }) {
+    return await this.expenseService.bulkDelete(req.user.id.toString(), body.ids);
+  }
+
   @Delete(':id')
   @HttpCode(204)
   remove(@Req() req: Request & { user: Partial<User> }, @Param('id') id: string) {
     return this.expenseService.remove(req.user.id.toString(), +id);
-  }
-
-  @Post('bulk')
-  async bulkInsert(@Req() req: Request & { user: Partial<User> }, @Body() createExpenseDto: CreateExpenseDto[]) {
-    return await this.expenseService.bulkInsert(req.user.id.toString(), createExpenseDto);
   }
 }

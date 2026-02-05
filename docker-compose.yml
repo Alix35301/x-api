@@ -24,7 +24,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${PORT:-3001}:3000"
+      - "3001:3000"
+    container_name: exp_api
+    volumes:
+      - ./:/app
+      - /app/node_modules
     environment:
       DATABASE_URL: mysql://${MYSQL_USER:-expense_user}:${MYSQL_PASSWORD:-expense_password}@mysql:3306/${MYSQL_DATABASE:-expense_tracker}
       MYSQL_HOST: mysql
@@ -33,7 +37,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-expense_password}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-expense_tracker}
       PORT: 3000
-      NODE_ENV: ${NODE_ENV:-production}
+      NODE_ENV: development
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
@@ -42,7 +46,18 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - default
+      - traefik-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.expense-api.rule=Host(`api.expense.localhost`)"
+      - "traefik.http.services.expense-api.loadbalancer.server.port=3000"
     restart: unless-stopped
 
 volumes:
   mysql_data:
+
+networks:
+  traefik-proxy:
+    external: true

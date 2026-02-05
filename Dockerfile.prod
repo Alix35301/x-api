@@ -1,0 +1,52 @@
+# Stage 1: Dependencies
+FROM node:20-alpine AS deps
+RUN npm install -g pnpm@9
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml* ./
+
+RUN pnpm install --frozen-lockfile --prod=false
+
+# Stage 2: Build
+FROM node:20-alpine AS builder
+RUN npm install -g pnpm@9
+
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+ENV NODE_ENV=production
+RUN pnpm build
+
+# Stage 3: Production runner
+FROM node:20-alpine AS runner
+RUN npm install -g pnpm@9
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY package.json pnpm-lock.yaml* ./
+
+# Install all deps (ts-node needed for TypeORM migrations via data-source-cli.ts)
+RUN pnpm install --frozen-lockfile --prod=false
+
+# Copy built application
+COPY --from=builder /app/dist ./dist
+
+# Copy files needed for TypeORM migrations
+COPY data-source-cli.ts tsconfig.json ./
+COPY src/migrations ./src/migrations
+COPY src/users/entities ./src/users/entities
+COPY src/expense/entities ./src/expense/entities
+COPY src/category/entities ./src/category/entities
+COPY src/bank-import/entities ./src/bank-import/entities
+
+# Bake production env vars into the image
+COPY .env.production .env
+
+EXPOSE 3000
+
+CMD ["node", "dist/src/main.js"]

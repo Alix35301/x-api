@@ -1,5 +1,17 @@
-import { IsString, IsNumber, IsObject, IsOptional, ValidateNested } from 'class-validator';
+import { IsString, IsNumber, IsObject, IsOptional, ValidateNested, IsArray } from 'class-validator';
 import { Type } from 'class-transformer';
+
+export class ColumnFilterDto {
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  include?: string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  exclude?: string[];
+}
 
 export class ColumnMappingsDto {
   @IsNumber()
@@ -43,4 +55,8 @@ export class CsvConfigDto {
   @ValidateNested()
   @Type(() => AmountFormatDto)
   amountFormat?: AmountFormatDto;
+
+  @IsOptional()
+  @IsObject()
+  filters?: Record<string, ColumnFilterDto>;
 }

@@ -83,7 +83,23 @@ export class ImportOrchestratorService {
         (_, index) => !validationResult.invalidRecords.includes(index),
       );
 
-      this.logger.log(`Valid transactions: ${validTransactions.length}/${parsedTransactions.length}`);
+      // Filter out own-account transfers (e.g., transfers to/from ALI HASSAN)
+      const ownAccountPatterns = ['ALI HASSAN'];
+      const filteredTransactions = validTransactions.filter(tx => {
+        const descriptionUpper = tx.description.toUpperCase();
+        const isOwnTransfer = ownAccountPatterns.some(pattern => descriptionUpper.includes(pattern));
+        if (isOwnTransfer) {
+          report.warnings.push(`Skipped own-account transfer: ${tx.description}`);
+        }
+        return !isOwnTransfer;
+      });
+
+      const skippedOwnTransfers = validTransactions.length - filteredTransactions.length;
+      if (skippedOwnTransfers > 0) {
+        this.logger.log(`Filtered out ${skippedOwnTransfers} own-account transfers`);
+      }
+
+      this.logger.log(`Valid transactions: ${filteredTransactions.length}/${parsedTransactions.length}`);
 
       // Phase 4: Check duplicates
       this.logger.log('Phase 4: Checking for duplicates...');
@@ -102,7 +118,7 @@ export class ImportOrchestratorService {
 
       // Check for duplicate transactions
       const { newTransactions, duplicates } = await this.duplicateDetector.checkDuplicates(
-        validTransactions,
+        filteredTransactions,
         userId,
       );
 

@@ -53,6 +53,11 @@ export class ExpenseService {
       });
     }
 
+    // Apply sorting
+    const sortBy = filterDto?.sort_by || 'date';
+    const sortOrder = filterDto?.sort_order || 'DESC';
+    query.orderBy(`expense.${sortBy}`, sortOrder);
+
     // Apply pagination
     const skip = (paginationDto.page - 1) * paginationDto.limit;
     query.skip(skip).take(paginationDto.limit);

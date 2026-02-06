@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDateString, IsOptional, IsPositive, Min } from "class-validator";
+import { IsDateString, IsIn, IsOptional, IsPositive, Min } from "class-validator";
 
 export class FilterDTO {
     @IsOptional()
@@ -26,4 +26,12 @@ export class FilterDTO {
     @IsPositive()
     @Min(1)
     limit?: number = 10;
+
+    @IsOptional()
+    @IsIn(['date', 'amount', 'description'])
+    sort_by?: string = 'date';
+
+    @IsOptional()
+    @IsIn(['ASC', 'DESC'])
+    sort_order?: 'ASC' | 'DESC' = 'DESC';
 }

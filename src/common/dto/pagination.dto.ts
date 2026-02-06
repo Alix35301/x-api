@@ -21,5 +21,6 @@ export interface PaginatedResult<T> {
     page: number;
     limit: number;
     totalPages: number;
+    totalAmount?: number;
   };
 }

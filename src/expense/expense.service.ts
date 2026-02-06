@@ -58,6 +58,12 @@ export class ExpenseService {
     const sortOrder = filterDto?.sort_order || 'DESC';
     query.orderBy(`expense.${sortBy}`, sortOrder);
 
+    // Get total amount before pagination (clone query without pagination)
+    const totalAmountResult = await query.clone()
+      .select('SUM(expense.amount)', 'sum')
+      .getRawOne();
+    const totalAmount = Number(totalAmountResult?.sum || 0);
+
     // Apply pagination
     const skip = (paginationDto.page - 1) * paginationDto.limit;
     query.skip(skip).take(paginationDto.limit);
@@ -70,6 +76,7 @@ export class ExpenseService {
         limit: paginationDto.limit,
         total: total,
         totalPages: Math.ceil(total / paginationDto.limit),
+        totalAmount: totalAmount,
       },
     };
   }

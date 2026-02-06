@@ -63,7 +63,7 @@ export class DashboardService {
     return {
       thisWeek: thisWeek,
       prevWeek: prevWeek,
-      percent: percentDiff,
+      percent: percentDiff !== null ? Math.abs(percentDiff) : null,
       trend: percentDiff !== null ? (percentDiff < 0 ? "decrease" : "increase") : "neutral",
     };
   }
@@ -86,7 +86,7 @@ export class DashboardService {
     return {
       thisMonth: thisMonth,
       prevMonth: prevMonth,
-      percent: percentDiff !== null ? percentDiff : null,
+      percent: percentDiff !== null ? Math.abs(percentDiff) : null,
       trend: percentDiff !== null ? (percentDiff < 0 ? "decrease" : "increase") : "neutral",
     };
   }

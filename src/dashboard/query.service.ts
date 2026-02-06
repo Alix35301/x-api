@@ -21,9 +21,8 @@ export class DashboardQueryService {
       .createQueryBuilder("expense")
       .select("SUM(expense.amount)", "total")
       .where("expense.user_id = :user_id", { user_id })
-      .andWhere("expense.date = :date", {
-        date: date,
-      })
+      .andWhere("expense.date = :date", { date })
+      .andWhere("expense.deleted_at IS NULL")
       .getRawOne();
     const total = Number(result?.total || 0);
 
@@ -39,6 +38,7 @@ export class DashboardQueryService {
       .select("SUM(expense.amount)", "total")
       .where("expense.user_id = :user_id", { user_id })
       .andWhere("expense.date BETWEEN :start AND :end", { start, end })
+      .andWhere("expense.deleted_at IS NULL")
       .getRawOne();
 
     const total = Number(result?.total || 0);
@@ -55,6 +55,7 @@ export class DashboardQueryService {
       .select("SUM(expense.amount)", "total")
       .where("expense.user_id = :user_id", { user_id })
       .andWhere("expense.date BETWEEN :start AND :end", { start, end })
+      .andWhere("expense.deleted_at IS NULL")
       .getRawOne();
 
     const total = Number(result?.total || 0);
@@ -69,6 +70,7 @@ export class DashboardQueryService {
     const result = await this.dataSource.getRepository(Expense)
       .createQueryBuilder("expense")
       .where("expense.user_id = :user_id", { user_id })
+      .andWhere("expense.deleted_at IS NULL")
       .select("DATE(expense.date)", "date")
       .groupBy("DATE(expense.date)")
       .addSelect("SUM(expense.amount)", "total")
@@ -85,6 +87,7 @@ export class DashboardQueryService {
     const result = await this.dataSource.getRepository(Expense)
       .createQueryBuilder("expense")
       .where("expense.user_id = :user_id", { user_id })
+      .andWhere("expense.deleted_at IS NULL")
       .select("YEAR(expense.date)", "year")
       .addSelect("WEEK(expense.date)", "week")
       .groupBy("YEAR(expense.date)")
@@ -102,6 +105,7 @@ export class DashboardQueryService {
     const result = await this.dataSource.getRepository(Expense)
       .createQueryBuilder("expense")
       .where("expense.user_id = :user_id", { user_id })
+      .andWhere("expense.deleted_at IS NULL")
       .select("YEAR(expense.date)", "year")
       .addSelect("MONTH(expense.date)", "month")
       .groupBy("YEAR(expense.date)")
@@ -120,6 +124,7 @@ export class DashboardQueryService {
       .createQueryBuilder("expense")
       .select("MAX(expense.date)", "lastDate")
       .where("expense.user_id = :user_id", { user_id })
+      .andWhere("expense.deleted_at IS NULL")
       .getRawOne();
 
     return result?.lastDate || null;
